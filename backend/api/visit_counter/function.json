@@ -1,0 +1,37 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    },
+    {
+      "name": "InputDocument",
+      "type": "cosmosDB",
+      "databaseName": "AzureResume",
+      "collectionName": "Visits",
+      "connectionStringSetting": "AzureCosmosDBConnectionString",
+      "direction": "in",
+      "sqlQuery": "SELECT * FROM c"
+  },
+  {
+      "name": "OutputDocument",
+      "type": "cosmosDB",
+      "databaseName": "AzureResume",
+      "collectionName": "Visits",
+      "connectionStringSetting": "AzureCosmosDBConnectionString",
+      "direction": "out"
+  }
+  ]
+}  

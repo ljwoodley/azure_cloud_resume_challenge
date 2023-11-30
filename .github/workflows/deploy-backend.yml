@@ -1,0 +1,33 @@
+name: Deploy Backend
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    environment: PROD
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Zip the function
+      run: |
+        cd backend/api
+        zip -r function.zip .
+
+    - name: Deploy to Azure Function
+      uses: Azure/functions-action@v1
+      id: deployment
+      with:
+        app-name: ${{ secrets.AZURE_FUNCTION_NAME }}
+        package: backend/api/function.zip
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
+    - name: Deployment status
+      run: echo "Deployment status ${{ steps.deployment.outputs.success }}"
