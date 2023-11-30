@@ -1,0 +1,49 @@
+name: Run Tests
+
+on:
+  workflow_call:
+    secrets:
+      FUNCTION_URL:
+        required: true
+      ENDPOINT_HOSTNAME:
+        required: true
+
+jobs:
+  run-unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download test.env (Only for Pull Requests)
+        if: github.event_name == 'pull_request'
+        uses: actions/download-artifact@v3
+        with:
+          name: test_env
+          path: ./
+
+      - name: Load Environment Variables from test.env (Only for Pull Requests)
+        if: github.event_name == 'pull_request'
+        run: |
+          cat ./test.env >> $GITHUB_ENV
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Setup Chrome Driver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: latest
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run API Test
+        working-directory: ./backend/tests
+        run: pytest test_api.py --url ${{ secrets.FUNCTION_URL }} -v --tb=no
+
+      - name: Run Webpage Test
+        working-directory: ./backend/tests
+        run: pytest test_webpage.py --url ${{ secrets.ENDPOINT_HOSTNAME }} -v --tb=no
