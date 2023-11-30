@@ -39,3 +39,8 @@ variable "tenant_id" {
   description = "Tenant ID for Azure"
   type        = string
 }
+
+variable "client_id" {
+  description = "Tenant ID for Azure"
+  type        = string
+}
