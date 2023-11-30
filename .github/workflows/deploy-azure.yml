@@ -1,0 +1,64 @@
+name: Deploy Azure Resources 
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+    TERRAFORM_WORKING_DIRECTORY: ./terraform
+    BACKEND_RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
+    BACKEND_STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
+    BACKEND_STORAGE_CONTAINER_NAME: ${{ secrets.BACKEND_STORAGE_CONTAINER_NAME }}
+    ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+    ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    TF_VAR_rg_name: ${{ secrets.RESOURCE_GROUP_NAME }}
+    TF_VAR_rg_location: ${{ secrets.RESOURCE_GROUP_LOCATION }}
+    TF_VAR_cosmosdb_account_name: ${{ secrets.COSMO_DB_ACCOUNT_NAME }}
+    TF_VAR_cosmosdb_sql_database_name: ${{ secrets.SQL_DB_NAME }}
+    TF_VAR_cosmosdb_sql_container_name: ${{ secrets.SQL_CONTAINER_NAME }}
+    TF_VAR_azure_function_name: ${{ secrets.AZURE_FUNCTION_NAME }}
+    TF_VAR_static_website_storage_account: ${{ secrets.STATIC_WEBSITE_STORAGE_ACCOUNT_NAME }}
+    TF_VAR_cdn_profile_name: ${{ secrets.CDN_PROFILE_NAME }}
+
+jobs:
+  deploy-azure-resources:
+    name: Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3.0.0
+        with:
+            terraform_version: 1.6.3
+            terraform_wrapper: false
+
+      - name: Terraform Init
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=$BACKEND_RESOURCE_GROUP_NAME" \
+            -backend-config="storage_account_name=$BACKEND_STORAGE_ACCOUNT_NAME" \
+            -backend-config="container_name=$BACKEND_STORAGE_CONTAINER_NAME"
+        
+      - name: Terraform Format
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: |
+          terraform fmt
+          terraform fmt -check
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: terraform apply -auto-approve "tfplan"
+      
