@@ -28,5 +28,14 @@ variable "static_website_storage_account" {
 
 variable "cdn_profile_name" {
   type = string
-  #re
+}
+
+variable "subscription_id" {
+  description = "Azure subscription ID"
+  type        = string
+}
+
+variable "tenant_id" {
+  description = "Tenant ID for Azure"
+  type        = string
 }
