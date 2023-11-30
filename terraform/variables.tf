@@ -40,7 +40,3 @@ variable "tenant_id" {
   type        = string
 }
 
-variable "client_id" {
-  description = "Tenant ID for Azure"
-  type        = string
-}
