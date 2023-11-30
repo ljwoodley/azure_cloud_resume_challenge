@@ -51,7 +51,7 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
-        run: terraform plan -out=tfplan
+        run: terraform plan -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}"
 
       # - name: Terraform Apply
       #   working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
