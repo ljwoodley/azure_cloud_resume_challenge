@@ -40,7 +40,7 @@ jobs:
             az cdn endpoint purge \
             --content-paths  "/*" \
             --profile-name ${{ secrets.CDN_PROFILE_NAME }} \
-            --name ${{ secrets.CDN_PROFILE_NAME }} \
+            --name ${{ secrets.CDN_ENDPOINT_NAME }} \
             --resource-group ${{ secrets.RESOURCE_GROUP_NAME }}
 
       - name: Azure logout
