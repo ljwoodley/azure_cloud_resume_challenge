@@ -55,6 +55,7 @@ jobs:
           terraform plan \
           -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
           -var="tenant_id=$ARM_TENANT_ID" \
+          -var="client_id=$ARM_CLIENT_ID" \
           -out=tfplan
 
       - name: Terraform Apply
