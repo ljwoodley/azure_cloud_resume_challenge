@@ -51,12 +51,8 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
-        run: |
-          terraform plan \
-          -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-          -var="tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
-          -out=tfplan
+        run: terraform plan -out=tfplan
 
-      - name: Terraform Apply
-        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
-        run: terraform apply -auto-approve "tfplan"
+      # - name: Terraform Apply
+      #   working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+      #   run: terraform apply -auto-approve "tfplan"
