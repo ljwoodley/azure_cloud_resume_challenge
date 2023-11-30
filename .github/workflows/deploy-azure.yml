@@ -64,3 +64,7 @@ jobs:
       - name: Terraform Apply
         working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
         run: terraform apply -auto-approve "tfplan"
+
+      - name: Azure logout
+        run: az logout
+        if: always()
