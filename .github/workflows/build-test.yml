@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
+    paths: 
+      - 'terraform/**'
+      - 'backend/api/**'
+      - 'frontend/index.html'
+      - 'frontend/js/visitcounter.js'
 
 permissions:
   id-token: write
