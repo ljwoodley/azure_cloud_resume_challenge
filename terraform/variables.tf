@@ -30,13 +30,13 @@ variable "cdn_profile_name" {
   type = string
 }
 
-variable "subscription_id" {
-  description = "Azure subscription ID"
-  type        = string
-}
+# variable "subscription_id" {
+#   description = "Azure subscription ID"
+#   type        = string
+# }
 
-variable "tenant_id" {
-  description = "Tenant ID for Azure"
-  type        = string
-}
+# variable "tenant_id" {
+#   description = "Tenant ID for Azure"
+#   type        = string
+# }
 
