@@ -15,16 +15,16 @@ permissions:
   contents: read
 
 env:
-  ARM_CLIENT_ID: ${{ secrets.TEST_AZURE_CLIENT_ID }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.TEST_AZURE_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.TEST_AZURE_TENANT_ID }}
-  TF_VAR_rg_location: ${{ secrets.TEST_RESOURCE_GROUP_LOCATION }}
-  TF_VAR_cosmosdb_account_name: ${{ secrets.TEST_COSMO_DB_ACCOUNT_NAME }}
-  TF_VAR_cosmosdb_sql_database_name: ${{ secrets.TEST_SQL_DB_NAME }}
-  TF_VAR_cosmosdb_sql_container_name: ${{ secrets.TEST_SQL_CONTAINER_NAME }}
-  TF_VAR_azure_function_name: ${{ secrets.TEST_AZURE_FUNCTION_NAME }}
-  TF_VAR_static_website_storage_account: ${{ secrets.TEST_STATIC_WEBSITE_STORAGE_ACCOUNT_NAME }}
-  TF_VAR_cdn_profile_name: ${{ secrets.TEST_CDN_PROFILE_NAME }}
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  TF_VAR_rg_location: ${{ secrets.RESOURCE_GROUP_LOCATION }}
+  TF_VAR_cosmosdb_account_name: ${{ secrets.COSMO_DB_ACCOUNT_NAME }}
+  TF_VAR_cosmosdb_sql_database_name: ${{ secrets.SQL_DB_NAME }}
+  TF_VAR_cosmosdb_sql_container_name: ${{ secrets.SQL_CONTAINER_NAME }}
+  TF_VAR_azure_function_name: ${{ secrets.AZURE_FUNCTION_NAME }}
+  TF_VAR_static_website_storage_account: ${{ secrets.STATIC_WEBSITE_STORAGE_ACCOUNT_NAME }}
+  TF_VAR_cdn_profile_name: ${{ secrets.CDN_PROFILE_NAME }}
   FUNCTION_URL: ${{ secrets.FUNCTION_URL }}
   ENDPOINT_HOSTNAME:  ${{ secrets.ENDPOINT_HOSTNAME }}
 
