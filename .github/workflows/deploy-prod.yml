@@ -9,6 +9,10 @@ on:
       - 'frontend/index.html'
       - 'frontend/js/visitcounter.js'
 
+permissions:
+  id-token: write
+  contents: read
+      
 jobs:
   changes:
     runs-on: ubuntu-latest
