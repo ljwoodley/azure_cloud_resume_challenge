@@ -6,8 +6,7 @@ on:
     paths:
       - "terraform/**"
       - "backend/api/**"
-      - "frontend/index.html"
-      - "frontend/js/visitcounter.js"
+      - "frontend/**"
 
 permissions:
   id-token: write
@@ -48,8 +47,7 @@ jobs:
             backend:
               - 'backend/api/**'
             frontend:
-              - 'frontend/index.html'
-              - 'frontend/js/visitcounter.js'
+              - 'frontend/**'
 
   deploy-azure-resources:
     needs: changes
