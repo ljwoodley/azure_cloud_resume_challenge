@@ -1,0 +1,40 @@
+// const functionApi = 'http://localhost:7071/api/visit_counter';
+
+// fetch(functionApi)
+//     .then(response => {
+//         return response.json();
+//     })
+//     .then (response => {
+//         console.log('Fetch succeeded to function.');
+//         document.getElementById('counter').innerText = response;
+//     })
+//     .catch(error => {
+//         console.error('There has been a problem with your fetch operation:', error);
+//     });
+
+ // Define your API endpoints for dev and prod
+const apis = {
+    dev_test: 'http://localhost:7071/api/visit_counter',
+    prod: 'https://your-production-url/api/visit_counter'
+};
+
+function getEnvironment() {
+    if (window.location.hostname === 'localhost') {
+        return 'dev';
+    } else {
+        return 'prod';
+    }
+}
+
+// Use the correct API based on the environment
+const functionApi = apis[getEnvironment()];
+
+fetch(functionApi)
+    .then(response => response.json())
+    .then(response => {
+        console.log('Fetch succeeded to function.');
+        document.getElementById('counter').innerText = response;
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });

@@ -1,27 +1,329 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 8 ]><html class="no-js ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="no-js ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 8)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple HTML Test Page</title>
-</head>
-<script src="js/visitcounter.js"></script>
-<body>
-    <h1>Welcome to My Test Page</h1>
-    <p>This is a simple HTML page without any JavaScript or CSS.</p>
-    <p>Test combined deployment #2</p>
 
-    <h2>Features of this Page:</h2>
-    <ul>
-        <li>Basic HTML structure</li>
-        <li>Header element</li>
-        <li>Paragraph element</li>
-        <li>Unordered list</li>
-    </ul>
-    
-    <footer>
-        <p>Test Page Footer</p>
-        <p>Page Views: <a id="counter"></a></p> 
-    </footer>
+   <!--- Basic Page Needs
+   ================================================== -->
+   <meta charset="utf-8">
+	<title>Laurence James-Woodley</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+   <!-- Mobile Specific Metas
+   ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+    ================================================== -->
+   <link rel="stylesheet" href="css/default.css">
+	<link rel="stylesheet" href="css/layout.css">
+   <link rel="stylesheet" href="css/media-queries.css">
+   <link rel="stylesheet" href="css/magnific-popup.css">
+
+   <!-- Script
+   ================================================== -->
+   <script src="js/modernizr.js"></script>
+   <script src="js/visitcounter.js"></script>
+
+   <!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.png" >
+
+</head>
+
+<body>
+
+   <!-- Header
+   ================================================== -->
+   <header id="home" style="background-image: url('images/hero_image.jpeg');">
+
+      <nav id="nav-wrap">
+
+         <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show navigation</a>
+	      <a class="mobile-btn" href="#" title="Hide navigation">Hide navigation</a>
+
+         <ul id="nav" class="nav">
+            <li class="current"><a class="smoothscroll" href="#home">Home</a></li>
+            <li><a class="smoothscroll" href="#about">About</a></li>
+	         <li><a class="smoothscroll" href="#resume">Resume</a></li>
+            <li><a href="https://ljwoodley.github.io/">Blog</a></li>
+         </ul> <!-- end #nav -->
+
+      </nav> <!-- end #nav-wrap -->
+
+      <div class="row banner">
+         <div class="banner-text">
+            <h1>Laurence James-Woodley</h1>
+            
+            <ul class="social">
+               <li><a href="https://linkedin.com/in/laurencejwoodley"><i class="fa fa-linkedin"></i></a></li> 
+               <li><a href="https://github.com/ljwoodley"><i class="fa fa-github"></i></a></li>
+            </ul>
+         </div>
+      </div>
+
+      <p class="scrolldown">
+         <a class="smoothscroll" href="#about"><i class="icon-down-circle"></i></a>
+      </p>
+
+   </header> <!-- Header End -->
+
+
+   <!-- About Section
+   ================================================== -->
+   <section id="about">
+
+      <div class="row">
+
+         <div class="three columns">
+
+            <img class="profile-pic"  src="images/headshot.jpeg" alt="" />
+
+         </div>
+
+         <div class="nine columns main-col">
+
+            <h2>ABOUT ME</h2>
+            <p>Hello! I'm Laurence. I specialize in Analytics Development, where I combine my interests for data and technology to
+               solve various problems. Throughout my career I've engineering data pipelines, built machine learning models
+               and developed automated reporting workflows. My toolkit, which includes Azure, Docker, Python, R, and SQL,
+               empowers me to streamline these processes and consistently deliver innovative and impactful solutions.
+            </p>
+               
+            <p>Fun Fact: This page has been viewed <a id="counter"></a>  times</p>
+           
+
+             <p>P.S. This page was inspired by Gwyneth's <a href="https://www.youtube.com/watch?v=ieYrBWmkfno&t=3291s">video</a>
+                as part of the <a href="https://cloudresumechallenge.dev">Cloud Resume Challenge,</a> an 
+                initiative thoughtfully crafted by Forrest Brazeal. The GitHub repo can be found <a href="https://cloudresumechallenge.dev">here.</a>
+               </p>     
+
+         </div> <!-- end .main-col -->
+
+      </div>
+
+   </section> <!-- About Section End-->
+
+
+   <!-- Resume Section
+   ================================================== -->
+   <section id="resume">
+
+      <!-- Certification
+      ----------------------------------------------- -->
+      <div class="row certification">
+
+         <div class="three columns header-col">
+            <h1><span>Certifications</span></h1>
+         </div>
+
+         <div class="nine columns main-col">         
+
+            <div class="row item">
+
+               <div class="twelve columns">
+                  <h3>Azure Fundamentals AZ-900 <a href="https://learn.microsoft.com/en-us/users/laurencejameswoodley-7736/credentials/bcd1da32ea5b7666"
+                    target="_blank">(Click to view certificate)</a></h3>
+               </div>
+
+            </div> <!-- item end -->            
+         
+         </div> <!-- main-col end -->
+
+      </div> <!-- End Education -->
+
+
+      <!-- Work
+      ----------------------------------------------- -->
+      <div class="row work">
+
+         <div class="three columns header-col">
+            <h1><span>Work</span></h1>
+         </div>
+
+         <div class="nine columns main-col">
+
+            <div class="row item">
+
+               <div class="twelve columns">
+
+                  <h3>Baylor Scott and White Health</h3>
+                  <p class="info">Analytics Developer<span class="separator">|</span> <span class="info">September 2022 - Present</span></p>
+                  <p>
+                  <li>Collaborated with cross-functional teams to understand data requirements and design scalable and efficient ETL
+                      process using various Azure services, such as Data Factory and Logic Apps, to fulfill these requirements.</li>
+                  <li>Boosted productivity by transforming recurring R reports into batch jobs and migrated the process to an Azure Virtual Machine.</li>
+                  <li>Migrated desktop based machine learning workflows to an Azure Machine Learning environment. This included refactoring R codebases for autonomous execution and utilizing MLflow for comprehensive model tracking.</li>
+
+               </div>
+
+            </div> <!-- item end -->
+            
+            <div class="row item">
+
+               <div class="twelve columns">
+                  <h3>Mathematica</h3>
+                  <p class="info">Data Analytics Developer<span class="separator">|</span> <span class="info">May 2022 - September 2022</span></p>
+                  <p>
+                  <li>
+                     Engineered a data reporting pipeline using R, which transformed data from the Centers for Medicare and Medicaid Services and outputted it into Excel workbooks tailored 
+                      for downstream use. This pipeline eliminated a previously labor-intensive two-week manual data manipulation and formatting process, significantly saving employees valuable time.
+                  </li>
+                  <li>
+                     Leveraged Plotly to craft interactive data visualizations that offered in-depth insights into a range of Medicare expenditure policy alternatives. These visualizations played 
+                     a pivotal role in enabling researchers to make informed decisions concerning the Centers for Medicare and Medicaid Services' 2023 fiscal year budget.
+                  </li>
+                  </p>
+               </div>
+
+            </div> <!-- item end -->
+
+            <div class="row item">
+
+               <div class="twelve columns">
+                  <h3>University of Florida</h3>
+                  <p class="info">Application Developer Analyst<span class="separator">|</span> <span class="info">February 2019 - May 2022</span></p>
+                  <p>
+                  <li>
+                     Developed an <a href="https://github.com/ctsit/psofa" target="_blank">algorithm</a> in collaboration with researchers, 
+                     that calculated the Pediatric Sequential Organ Failure Assessment (pSOFA) score from electronic medical records. This algorithm enabled 
+                     the creation of novel datasets, providing insights into the predictive value of the pSOFA score in assessing mortality risk among critically ill children.
+                  </li>
+                  <li>
+                     Built a Shiny dashboard that provided insights into employee time allocation across projects and automated the creation of monthly project invoices. 
+                     This dashboard was containerized using Docker and deployed on a Linux server, streamlining the invoice generation process with a user-friendly web 
+                     interface that allowed invoices to be generated with one click.
+                  </li>
+                  <li>
+                     Designed and implemented ETL pipelines and automated reporting workflows using R, Docker, MySQL and REDCap to support the Screen, Test and Protect initiative at the University of Florida. 
+                     These solutions improved data accuracy and significantly reduced data processing times, providing critical support to disease investigators in their COVID-19 testing and contact tracing efforts across campus. 
+                     It was instrumental in reducing the number of new cases and enabled a safe reopening during the pandemic, effectively protecting the health of over 40,000 faculty, staff and students.
+                  </li>
+                  </p>
+               </div>
+
+            </div> <!-- item end -->
+
+            <div class="row item">
+
+               <div class="twelve columns">
+                  <h3>Data Targeting</h3>
+                  <p class="info">Data Analyst<span class="separator">|</span> <span class="info">March 2018 - October 2018</span></p>
+                  <p>
+                  <li>Built RMarkdown reports to conduct in-depth analysis of political action committee contributions, focusing on donor retention rates and 
+                      crafting actionable strategies for fostering donation growth.</li>
+                  <li>Collaborated with Data Science team to implement logistic regression models in Python, resulting in the optimization of targeted advertising campaigns.</li>
+                  <li>Created tables and queries with PostgreSQL to identify target segments for mail, phone, and digital campaigns.</li>
+                  </p>
+                  </div>
+               </div>
+
+            </div> <!-- item end -->
+
+         </div> <!-- main-col end -->
+
+      </div> <!-- End Work -->
+
+      <!-- Education
+      ----------------------------------------------- -->
+      <div class="row education">
+
+         <div class="three columns header-col">
+            <h1><span>Education</span></h1>
+         </div>
+
+         <div class="nine columns main-col">
+           
+            <div class="row item">
+
+               <div class="twelve columns">
+
+                  <h3>University of Florida</h3>
+                  <p class="info">B.S. Statistics<span class="separator">|</span> <span class="info">August 2017</span></p>
+
+               </div>
+
+            </div> <!-- item end -->
+            
+         </div> <!-- main-col end -->
+
+      </div> <!-- End Education -->
+
+      <!-- Projects
+      ----------------------------------------------- -->
+      <div class="row projects">
+
+         <div class="three columns header-col">
+            <h1><span>Projects</span></h1>
+         </div>
+
+         <div class="nine columns main-col">
+           
+            <div class="row item">
+
+               <div class="twelve columns">
+
+                  <h3>
+                     redcapcustodian
+                     <a href="https://github.com/ctsit/redcapcustodian" target="_blank"><i class="fa fa-github"></i></a>
+                  </h3>
+                  <p>An R package that simplifies data management activities on REDCap systems. 
+                     It provides a framework for automating data extraction, transformation, and loading (ETL) work. 
+                     It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, 
+                     and with the REDCap database. 
+                     It provides an extensible set of R functions, a Docker image, and an RStudio Project template 
+                     upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.
+                  </p>
+               </div>
+            
+         </div> <!-- main-col end -->
+
+      </div> <!-- End Projects -->
+      
+
+   </section> <!-- Resume Section End-->
+
+
+   <!-- footer
+   ================================================== -->
+   <footer>
+
+      <div class="row">
+
+         <div class="twelve columns">
+
+            <ul class="social-links">
+               <li><a href="https://linkedin.com/in/laurencejwoodley"><i class="fa fa-linkedin"></i></a></li> 
+               <li><a href="https://github.com/ljwoodley"><i class="fa fa-github"></i></a></li>
+            </ul>
+
+            <ul class="copyright">
+               <a href="https://www.styleshout.com/free-templates/ceevee/"> Template by CeeVee </a>
+                
+            </ul>
+
+         </div>
+
+         <div id="go-top"><a class="smoothscroll" title="Back to Top" href="#home"><i class="icon-up-open"></i></a></div>
+
+      </div>
+
+   </footer> <!-- Footer End-->
+
+   <!-- Java Script
+   ================================================== -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+   <script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')</script>
+   <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+
+   <script src="js/jquery.flexslider.js"></script>
+   <script src="js/waypoints.js"></script>
+   <script src="js/jquery.fittext.js"></script>
+   <script src="js/magnific-popup.js"></script>
+   <script src="js/init.js"></script>
+
 </body>
+
 </html>
