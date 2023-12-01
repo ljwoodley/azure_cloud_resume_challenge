@@ -14,7 +14,7 @@ def main(
         OutputDocument.set(func.Document.from_dict(new_data))
         response_body = new_data["count"]
     else:
-        # Access the document for reading
+        # Access the document
         current_data = InputDocument[0]
         # Increment the count
         current_data["count"] += 1

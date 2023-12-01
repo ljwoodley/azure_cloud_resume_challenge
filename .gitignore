@@ -9,3 +9,5 @@ tfplan
 !examples/*
 
 __pycache__/
+
+*.PublishSettings

@@ -1,7 +1,6 @@
 name: Production Deployment
 
 on:
-  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -161,6 +160,7 @@ jobs:
 
   run-tests:
     needs: [changes, deploy-azure-resources, deploy-backend, deploy-frontend]
+    if: ${{ always() }}
     uses: ./.github/workflows/run-tests.yml
     secrets:
       FUNCTION_URL: ${{ secrets.FUNCTION_URL }}
