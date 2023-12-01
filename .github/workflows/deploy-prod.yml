@@ -1,18 +1,36 @@
 name: Production Deployment
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
-    paths: 
-      - 'terraform/**'
-      - 'backend/api/**'
-      - 'frontend/index.html'
-      - 'frontend/js/visitcounter.js'
+    branches: [main]
+    paths:
+      - "terraform/**"
+      - "backend/api/**"
+      - "frontend/index.html"
+      - "frontend/js/visitcounter.js"
 
 permissions:
   id-token: write
   contents: read
-      
+
+env:
+  TERRAFORM_WORKING_DIRECTORY: ./terraform
+  BACKEND_RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
+  BACKEND_STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
+  BACKEND_STORAGE_CONTAINER_NAME: ${{ secrets.BACKEND_STORAGE_CONTAINER_NAME }}
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  TF_VAR_rg_name: ${{ secrets.RESOURCE_GROUP_NAME }}
+  TF_VAR_rg_location: ${{ secrets.RESOURCE_GROUP_LOCATION }}
+  TF_VAR_cosmosdb_account_name: ${{ secrets.COSMO_DB_ACCOUNT_NAME }}
+  TF_VAR_cosmosdb_sql_database_name: ${{ secrets.SQL_DB_NAME }}
+  TF_VAR_cosmosdb_sql_container_name: ${{ secrets.SQL_CONTAINER_NAME }}
+  TF_VAR_azure_function_name: ${{ secrets.AZURE_FUNCTION_NAME }}
+  TF_VAR_static_website_storage_account: ${{ secrets.STATIC_WEBSITE_STORAGE_ACCOUNT_NAME }}
+  TF_VAR_cdn_profile_name: ${{ secrets.CDN_PROFILE_NAME }}
+
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -21,37 +39,128 @@ jobs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
     steps:
-    - uses: actions/checkout@v4
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        filters: |
-          terraform:
-            - 'terraform/**'
-          backend:
-            - 'backend/api/**'
-          frontend:
-            - 'frontend/index.html'
-            - 'frontend/js/visitcounter.js'
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            terraform:
+              - 'terraform/**'
+            backend:
+              - 'backend/api/**'
+            frontend:
+              - 'frontend/index.html'
+              - 'frontend/js/visitcounter.js'
 
-  deploy-azure:
+  deploy-azure-resources:
     needs: changes
+    runs-on: ubuntu-latest
+    environment: PROD
     if: ${{ always() && needs.changes.outputs.terraform == 'true' }}
-    uses: ./.github/workflows/deploy-azure.yml
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3.0.0
+        with:
+          terraform_version: 1.6.3
+          terraform_wrapper: false
+
+      - name: Az CLI login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Terraform Init
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=$BACKEND_RESOURCE_GROUP_NAME" \
+            -backend-config="storage_account_name=$BACKEND_STORAGE_ACCOUNT_NAME" \
+            -backend-config="container_name=$BACKEND_STORAGE_CONTAINER_NAME"
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: terraform plan -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: terraform apply -auto-approve "tfplan"
+
+      - name: Azure logout
+        run: az logout
+        if: always()
 
   deploy-backend:
-    needs: [changes, deploy-azure]
+    needs: [changes, deploy-azure-resources]
+    runs-on: ubuntu-latest
+    environment: PROD
     if: ${{ always() && needs.changes.outputs.backend == 'true' }}
-    uses: ./.github/workflows/deploy-backend.yml
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Zip the function
+        run: |
+          cd backend/api
+          zip -r function.zip .
+
+      - name: Deploy to Azure Function
+        uses: Azure/functions-action@v1
+        id: deployment
+        with:
+          app-name: ${{ secrets.AZURE_FUNCTION_NAME }}
+          package: backend/api/function.zip
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
+      - name: Deployment status
+        run: echo "Deployment status ${{ steps.deployment.outputs.success }}"
 
   deploy-frontend:
-    needs: [changes, deploy-azure, deploy-backend]
+    needs: [changes, deploy-azure-resources, deploy-backend]
     if: ${{ always() && needs.changes.outputs.frontend == 'true' }}
-    uses: ./.github/workflows/deploy-frontend.yml
-    
-  run-unit-test:
-    needs: [changes, deploy-azure, deploy-backend, deploy-frontend]
-    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    environment: PROD
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Azure CLI
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload to blob storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch --account-name ${{ secrets.STATIC_WEBSITE_STORAGE_ACCOUNT_NAME }} \
+            --auth-mode key \
+            --overwrite=true \
+            --destination '$web' \
+            --source frontend/
+
+      - name: Purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az cdn endpoint purge \
+            --content-paths  "/*" \
+            --profile-name ${{ secrets.CDN_PROFILE_NAME }} \
+            --name ${{ secrets.CDN_ENDPOINT_NAME }} \
+            --resource-group ${{ secrets.RESOURCE_GROUP_NAME }}
+
+      - name: Azure logout
+        run: az logout
+        if: always()
+
+  run-tests:
+    needs: [changes, deploy-azure-resources, deploy-backend, deploy-frontend]
     uses: ./.github/workflows/run-tests.yml
     secrets:
       FUNCTION_URL: ${{ secrets.FUNCTION_URL }}
