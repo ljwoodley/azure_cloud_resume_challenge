@@ -39,8 +39,8 @@ az account list --output table
 az account set --subscription <subscription_name>
 ```
 
-### Github Setup
-1. __GitHub Environemnts__: Create `PROD` and `TEST` [Github environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
+### GitHub Setup
+1. __GitHub Environemnts__: Create `PROD` and `TEST` [GitHub environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
 
 2. __GitHub Secrets Management__: Copy [examples/prod.env](examples/prod.env) to `prod.env` and populate the required variables. The variables are necessary for terraform to build Azure resources. Run 
 `gh secret set -f prod.env --env PROD` to set the secrets in the `PROD` environment. Repeat these steps for the TEST environment.
@@ -76,7 +76,7 @@ Two main tests are ran:
 2.  `./backend/tests/test_webpage.py` tests that the visit count is displayed on the the webpage.
 
 ## Production Deployment
-The production deployment is triggered when there are changes to [./terraform](./terraform), [./backend/api](./backend/api) or [./frontend](./frontend) directories of the main branch. `.github/workflows/deploy-prod.yml` orchestrates the deployment by calling several jobs, each tailored to handle specific components of the deployment.
+The production deployment is triggered when there are changes to [./terraform](./terraform), [./backend/api](./backend/api) or [./frontend](./frontend) directories of the main branch. [.github/workflows/deploy-prod.yml](.github/workflows/deploy-prod.yml) orchestrates the deployment by calling several jobs, each tailored to handle specific components of the deployment:
 
 - __Infrastructure Deployment__: Azure resources are deployed with Terraform via `deploy-azure-resources`.
 
