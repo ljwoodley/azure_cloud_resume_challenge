@@ -1,0 +1,54 @@
+name: Production Deployment
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'terraform/**'
+      - 'backend/api/**'
+      - 'frontend/index.html'
+      - 'frontend/js/visitcounter.js'
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      terraform: ${{ steps.filter.outputs.terraform }}
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          terraform:
+            - 'terraform/**'
+          backend:
+            - 'backend/api/**'
+          frontend:
+            - 'frontend/index.html'
+            - 'frontend/js/visitcounter.js'
+
+  deploy-azure:
+    needs: changes
+    if: ${{ always() && needs.changes.outputs.terraform == 'true' }}
+    uses: ./.github/workflows/deploy-azure.yml
+
+  deploy-backend:
+    needs: [changes, deploy-azure]
+    if: ${{ always() && needs.changes.outputs.backend == 'true' }}
+    uses: ./.github/workflows/deploy-backend.yml
+
+  deploy-frontend:
+    needs: [changes, deploy-azure, deploy-backend]
+    if: ${{ always() && needs.changes.outputs.frontend == 'true' }}
+    uses: ./.github/workflows/deploy-frontend.yml
+    
+  run-unit-test:
+    needs: [changes, deploy-azure, deploy-backend, deploy-frontend]
+    if: ${{ always() }}
+    uses: ./.github/workflows/run-tests.yml
+    secrets:
+      FUNCTION_URL: ${{ secrets.FUNCTION_URL }}
+      ENDPOINT_HOSTNAME: ${{ secrets.ENDPOINT_HOSTNAME }}
