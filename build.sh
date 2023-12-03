@@ -71,11 +71,6 @@ STATIC_STORAGE_ACCOUNT_NAME=$(terraform output -raw static_website_storage_name)
 echo "Function Setup"
 
 cd ..
-cp ./examples/local.settings.json ./backend/api/local.settings.json
-
-# Replace TODO with the connection string
-#using -i.bak is a hack to enable sed to work on both mac and linux OS
-sed -i.bak "s|TODO|$COSMOSDB_CONNECTION_STRING|" ./backend/api/local.settings.json
 
 echo "Packaging function"
 cd backend/api
@@ -102,7 +97,9 @@ FUNCTION_KEY=$(
 echo "Adding function url to visitcounter.js"
 FUNCTION_URL="https://${FUNCTION_APP_URL}/api/visit_counter?code=${FUNCTION_KEY}"
 
-cp ./examples/visitcounter.js ./frontend/js/visitcounter.js
+# Replace TODO with the function url
+#using -i.bak is a hack to enable sed to work on both mac and linux OS
+#cp ./examples/visitcounter.js ./frontend/js/visitcounter.js
 sed -i.bak "s|TODO|$FUNCTION_URL|" ./frontend/js/visitcounter.js
 
 echo "Uploading frontend contents"
@@ -116,9 +113,13 @@ az storage blob upload-batch \
 ENDPOINT_HOSTNAME="https://${STATIC_STORAGE_ACCOUNT_NAME}.azureedge.net"
 
 echo "Enabling CORS"
+az functionapp cors remove --name $FUNCTION_APP_NAME \
+    --resource-group $RESOURCE_GROUP_NAME \
+    --allowed-origins
+
 az functionapp cors add --name $FUNCTION_APP_NAME \
     --resource-group $RESOURCE_GROUP_NAME \
-    --allowed-origins $ENDPOINT_HOSTNAME
+    --allowed-origins "*"
 
 variables=(
     "BACKEND_RESOURCE_GROUP_NAME"

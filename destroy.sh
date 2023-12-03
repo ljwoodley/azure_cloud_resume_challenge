@@ -17,8 +17,10 @@ az storage account delete \
     --yes
 
 if [ -z $GITHUB_ACTIONS ]; then
+
+    sed -i.bak "s|$FUNCTION_URL|TODO|" ./frontend/js/visitcounter.js
     # echo "Deleting dev files"
-    rm dev.env function.zip ./frontend/js/visitcounter.js.bak ./backend/api/local.settings.json.bak
+    rm dev.env function.zip ./frontend/js/visitcounter.js.bak
 
     # echo "Deleting dev terraform states and plan"
     rm -rf ./terraform/.terraform ./terraform/.terraform.lock.hcl ./terraform/tfplan
