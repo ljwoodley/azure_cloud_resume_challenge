@@ -42,7 +42,6 @@ resource "azurerm_linux_function_app" "main" {
 
     cors {
       allowed_origins     = ["https://www.laurencejwoodley.com"]
-      support_credentials = true
     }
   }
 
