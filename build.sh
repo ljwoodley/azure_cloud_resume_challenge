@@ -99,7 +99,6 @@ FUNCTION_URL="https://${FUNCTION_APP_URL}/api/visit_counter?code=${FUNCTION_KEY}
 
 # Replace TODO with the function url
 #using -i.bak is a hack to enable sed to work on both mac and linux OS
-#cp ./examples/visitcounter.js ./frontend/js/visitcounter.js
 sed -i.bak "s|TODO|$FUNCTION_URL|" ./frontend/js/visitcounter.js
 
 echo "Uploading frontend contents"
