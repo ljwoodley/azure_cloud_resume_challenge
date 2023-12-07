@@ -5,6 +5,8 @@ In the pursuit to expand my skills and knowledge in Azure, I embarked on the [Az
 
 The completed resume can be found at [https://www.laurencejwoodley.com](https://www.laurencejwoodley.com).
 
+A blog post on my journey can be found [here](https://ljwoodley.github.io/posts/2023-12-07/post.html)
+
 The main knowledge sources used to complete this challenge were:
 
   -  Microsoft documentations
