@@ -22,11 +22,8 @@ Before starting, ensure the following tools are installed on your system:
 
 Additionally, set up dedicated Azure subscriptions for production and development environments. This ensures that production resources are developed and maintained independently of development resources.
 
-## Configuring Secrets and Azure Credentials for GitHub Actions
-[OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux#use-the-azure-login-action-with-openid-connect) (OIDC) is used to authenticate with Azure from a GitHub Actions workflow. The official [GitHub docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure) contains information on setting up a workflow for OIDC. 
-
-### Azure Subscription Setup
-You must be logged into an Azure subscription for OIDC configuration. Follow these steps if you
+## Azure Subscription Setup
+You must be logged into an Azure subscription for this project. Follow these steps if you
 need to log into your subscription.
 1. __Azure Account Login__: Run `az login`.
 
@@ -37,17 +34,6 @@ need to log into your subscription.
 az account list --output table
 
 az account set --subscription <subscription_name>
-```
-
-### GitHub Setup
-1. __GitHub Environemnts__: Create `PROD` and `TEST` [GitHub environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
-
-2. __GitHub Secrets Management__: Copy [examples/prod.env](examples/prod.env) to `prod.env` and populate the required variables. The variables are necessary for terraform to build Azure resources. Run 
-`gh secret set -f prod.env --env PROD` to set the secrets in the `PROD` environment. Repeat these steps for the TEST environment.
-
-3. __OIDC Configuration__: Run the following to configure OIDC and store the credentials in the desired environemnt. 
-```bash
-./open_id_connect.sh <APP_NAME> <SUBSCRIPTION_NAME> <GITHUB_ENVIRONMENT>
 ```
 
 ## Development Environment
@@ -61,6 +47,26 @@ Steps 2 and 3 are not necessary if you are already logged into the desired subsc
 3. __Initialize Development Environment__: Run `./build.sh` to set up the Azure development environment.
 
 4. __Clean Up__: Once done, run `./destroy.sh` to destroy the development environment.
+
+
+__Note, the remaining sections are only necessary for setting up and understanding the CI/CD pipelines.__
+
+## Configuring Secrets and Azure Credentials for GitHub Actions
+[OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux#use-the-azure-login-action-with-openid-connect) (OIDC) is used to authenticate with Azure from a GitHub Actions workflow. The official [GitHub docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure) contains information on setting up a workflow for OIDC. 
+
+
+### GitHub Setup
+1. __GitHub Environemnts__: Create `PROD` and `TEST` [GitHub environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
+
+2. __GitHub Secrets Management__: Copy [examples/prod.env](examples/prod.env) to `prod.env` and populate the required variables. The variables are necessary for terraform to build Azure resources. Run 
+`gh secret set -f prod.env --env PROD` to set the secrets in the `PROD` environment. Repeat these steps for the TEST environment.
+
+3. __OIDC Configuration__: Run the following to configure OIDC and store the credentials in the desired environemnt. 
+```bash
+./open_id_connect.sh <APP_NAME> <SUBSCRIPTION_NAME> <GITHUB_ENVIRONMENT>
+```
+
+
 
 
 ## Testing Process
