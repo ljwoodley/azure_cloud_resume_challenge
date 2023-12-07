@@ -5,7 +5,7 @@ In the pursuit to expand my skills and knowledge in Azure, I embarked on the [Az
 
 The completed resume can be found at [https://www.laurencejwoodley.com](https://www.laurencejwoodley.com).
 
-A blog post on my journey can be found [here](https://ljwoodley.github.io/posts/2023-12-07/post.html)
+A blog post on my journey can be found [here.](https://ljwoodley.github.io/posts/2023-12-07/post.html)
 
 The main knowledge sources used to complete this challenge were:
 
@@ -65,7 +65,7 @@ __Note, the remaining sections are only necessary for setting up and understandi
 
 3. __OIDC Configuration__: Run the following to configure OIDC and store the credentials in the desired environemnt. 
 ```bash
-./open_id_connect.sh <APP_NAME> <SUBSCRIPTION_NAME> <GITHUB_ENVIRONMENT>
+./oidc.sh <APP_NAME> <SUBSCRIPTION_NAME> <GITHUB_ENVIRONMENT>
 ```
 
 
