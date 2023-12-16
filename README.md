@@ -54,10 +54,9 @@ Steps 2 and 3 are not necessary if you are already logged into the desired subsc
 __Note, the remaining sections are only necessary for setting up and understanding the CI/CD pipelines.__
 
 ## Configuring Secrets and Azure Credentials for GitHub Actions
-[OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux#use-the-azure-login-action-with-openid-connect) (OIDC) is used to authenticate with Azure from a GitHub Actions workflow. The official [GitHub docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure) contains information on setting up a workflow for OIDC. 
+[OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux#use-the-azure-login-action-with-openid-connect) (OIDC) is used to authenticate with Azure from a GitHub Actions workflow. The [GitHub docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure) contain information on setting up a workflow for OIDC. 
 
 
-### GitHub Setup
 1. __GitHub Environemnts__: Create `PROD` and `TEST` [GitHub environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
 
 2. __GitHub Secrets Management__: Copy [examples/prod.env](examples/prod.env) to `prod.env` and populate the required variables. The variables are necessary for terraform to build Azure resources. Run 
