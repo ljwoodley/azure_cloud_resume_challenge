@@ -54,7 +54,7 @@ jobs:
           ./build.sh
 
       - name: Upload test.env
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test_env
           path: test.env
@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download test.env
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: test_env
           path: ./
